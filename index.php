@@ -1,3 +1,7 @@
+<?
+	require_once 'includes/env.php';
+	require_once 'endpoints/new-quiz.php';	// this will parse any submitted info
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,7 +31,7 @@
 		<h1>Hybrids of Canada: Language Experiment</h1>
 	</div>
 	
-	<form id="form" action="instructions.php">
+	<form id="form" action="index.php" method="post">
 		<span class="form-name">First Name:</span> <input class="input-box form-control" type="text" name="FirstName"> 
 		<span class="form-name">Last Name:</span> <input class="input-box form-control" type="text" name="LastName">
 		<span class="form-name">Date of Birth:</span> <input class="input-box form-control" type="date" name="Birthday" placeholder="mm/dd/yyyy"> 
