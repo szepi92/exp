@@ -61,7 +61,7 @@
 		<p>
 			<h4>Get ready! Respond to the following 250 images in 'First Language'.</h4>
 		</p>
-		<button id="begin" class="btn"><a href="new-language.php"> Begin Experiment </a></button>
+	<a id="begin" class="btn" href="image-query.php"> Begin Experiment </a>
 	</div>
 	
 	
