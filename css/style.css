@@ -1,0 +1,12 @@
+/* The global style sheet. */
+
+body {
+	font-family: 'Open Sans',arial,sans-serif;
+	font-size: 13px;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
