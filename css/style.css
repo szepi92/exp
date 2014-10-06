@@ -57,3 +57,54 @@ html, body {
 	margin-top: 20px;
 	margin-bottom: 100px;
 }
+
+.instruction-box {
+	width: 800px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.sub-title {
+	padding-top: 30px;
+	padding-bottom: 20px;'
+}
+
+#example-img {
+	width: 100%;
+}
+
+.picture-label, .exp-picture-label {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	line-height: 5px;
+}
+
+.instruction-box h4 {
+	margin-top: 40px;
+	text-align: center;
+}
+
+#begin {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 200px;
+	margin-top: 30px;
+	margin-bottom: 150px;
+	vertical-align: center;
+}
+
+
+#experiment-img {
+	height: 570px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#center-title {
+	text-align: center;
+	margin-top: 200px;
+}
