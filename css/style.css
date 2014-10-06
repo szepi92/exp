@@ -11,6 +11,13 @@ html, body {
 	height: 100%;
 }
 
+.alert {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+
 .btn, .btn:focus {
 	background-color: #e6e3e9;
 	outline: none;
