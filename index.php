@@ -18,17 +18,32 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+	
+	
   </head>
   <body>
-    <div class="wrapper">
-		<div class="container" id="app-container">
-			HELLO WORLD
-		</div>
+  
+    <div id="title">
+		<h1>Hybrids of Canada: Language Experiment</h1>
 	</div>
+	
+	<form id="form" action="instructions.php">
+		<span class="form-name">First Name:</span> <input class="input-box form-control" type="text" name="FirstName"> 
+		<span class="form-name">Last Name:</span> <input class="input-box form-control" type="text" name="LastName">
+		<span class="form-name">Date of Birth:</span> <input class="input-box form-control" type="date" name="Birthday" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">Country of Origin:</span> <input class="input-box form-control" type="text" name="Country"> 
+		<span class="form-name">Date of Relocation:</span> <input class="input-box form-control" type="date" name="Relocation" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">E-Mail Address:</span> <input class="input-box form-control" type="email" name="Email"> 
+		<span class="form-name">First Language:</span> <input class="input-box form-control" type="text" name="FirstLanguage">
+		<span class="form-name">Second Language:</span> <input class="input-box form-control" type="text" name="SecondLanguage">
+		<input class="btn" id="submit-button" type="submit" value="Submit">
+	</form>
+	
+	
 	
     <!-- Library javascript files -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>
   </body>

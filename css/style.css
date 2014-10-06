@@ -10,3 +10,50 @@ html, body {
 	padding: 0;
 	height: 100%;
 }
+
+.btn, .btn:focus {
+	background-color: #e6e3e9;
+	outline: none;
+	border: none;
+}
+
+.btn:hover, .btn:active {
+	background-color: #efefef;
+	outline: none;
+	border: none;
+}
+
+#title {
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	font-family: 'Trajan Pro'
+}
+
+#form {
+	display: block;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 26px;
+}
+
+.form-name {
+	display: block;
+}
+
+.input-box {
+	display: block;
+	vertical-align: bottom;
+	width: 300px;
+	margin-bottom: 10px;
+}
+
+#submit-button {
+	display: block;
+	margin-left: auto;
+	margin-right: 0px;
+	width: 120px;
+	margin-top: 20px;
+	margin-bottom: 100px;
+}
