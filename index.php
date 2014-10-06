@@ -26,7 +26,17 @@
 	
   </head>
   <body>
-  
+	<?php if (isset($ERROR) and !empty($ERROR)) { ?>
+	<!-- Alert box (see Bootstrap) -->
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert">
+			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+		</button>
+		<strong>Oops.</strong>
+		<?php if ($DEBUG) echo $ERROR->exception->getMessage(); else echo $ERROR->friendly_message; ?>
+	</div>
+	<?php } ?>
+	
     <div id="title">
 		<h1>Hybrids of Canada: Language Experiment</h1>
 	</div>

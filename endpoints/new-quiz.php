@@ -10,11 +10,16 @@ require_once "includes/quiz-session.php";
 
 /*
 When this page is hit, it expects information to be in the $_POST variable.
-It will validate the info and redirect to instructions.php if necessary
+It will validate the info and redirect to instructions.php once complete.
+This is also responsible for creating the quiz,user, and session objects.
+It also inserts them into the back-end (database).
 */
 
+// Only continue if we are "POST"-ing
 if ($_SERVER["REQUEST_METHOD"] != "POST") return;
 
+
+// Remove obvious special characters
 function sanitize($data) {
   $data = trim($data);
   $data = stripslashes($data);
@@ -22,6 +27,7 @@ function sanitize($data) {
   return $data;
 }
 
+// Extract the data
 $first_name      = sanitize($_POST['FirstName']);
 $last_name       = sanitize($_POST['LastName']);
 $email           = sanitize($_POST['Email']);
@@ -31,13 +37,14 @@ $relocation      = sanitize($_POST['Relocation']);
 $first_language  = sanitize($_POST['FirstLanguage']);
 $second_language = sanitize($_POST['SecondLanguage']);
 
+// This will be returned to the front-end if necessary
 $ERROR = null;
 
-// The dates
+// Further parse the dates (into UNIX time stamps)
 $birthday = strtotime($birthday);
 $relocation = strtotime($relocation);
 
-// The languages
+// Further parse the languages (into Language objects)
 $first_language  = new Language($first_language);
 $second_language = new Language($second_language);
 $languages       = array($first_language, $second_language);
@@ -46,15 +53,15 @@ $num_questions   = Quiz::NUMBER_OF_QUESTIONS;
 
 // Create the Quiz, the User, and the Session
 try {
-	$quiz = new Quiz($num_questions, $languages);	// Create a blank quiz
 	$user = new User($first_name, $last_name, $email, $birthday, $country, $relocation, $languages);
+	$quiz = new Quiz($num_questions, $languages, $user);	// Create a blank quiz
 	$quiz_session = new QuizSession($quiz, $user);
 } catch (Exception $e) {
 	$ERROR = new Error($e, ErrorMessages::BAD_DATA);
 	return;
 }
 
-// Initialize the quiz
+// Initialize the quiz (questions)
 try {
 	$image_dir = Image::DEFAULT_DIRECTORY;
 	$quiz->initFromDirectory($image_dir);
@@ -64,11 +71,16 @@ try {
 }
 
 // Save them to the database
+$conn = null;
 try {
-	$quiz->save();
-	$user->save();
-	$quiz_session->save();
+	$conn = DB::Connect();	// connect to default database
+	$conn->beginTransaction();
+		$quiz->insert($conn);
+		$user->insert($conn);
+		$quiz_session->insert($conn);
+	$conn->commit();
 } catch(Exception $e) {
+	if ($conn != null) $conn->rollBack();
 	$ERROR = new Error($e, ErrorMessages::CONNECTION_ERROR);
 	return;
 }
