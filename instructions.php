@@ -58,6 +58,8 @@
 		<p>
 			If this was your image, you would say 'tomato', then wait for your reaction time to appear under the image and press the spacebar when you are ready to continue. 
 		</p>
+		<br/>
+		<br/>
 		<p>
 			<h4>Get ready! Respond to the following 250 images in 'First Language'.</h4>
 		</p>
