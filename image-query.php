@@ -1,3 +1,8 @@
+<?php
+	require_once 'includes/env.php';
+	require_once 'endpoints/session-redirect.php';
+	//require_once 'endpoints/next-image.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,11 +27,18 @@
 	
   </head>
   <body>
-  
+	<?php
+		$lang = $quiz_session->currentLanguage();
+		$question = $quiz_session->currentQuestion();
+		$image_url = $quiz->image($lang, $question);
+		
+		$total_questions = $quiz->questionsPerLang();
+		$language = $quiz->language($lang);
+	?>
 	<div class="img-query">
-		<img id="experiment-img" src="images/tomato.jpg">
-		<div class="picture-label"> <b>Image:</b> 1/250 </div>
-		<div class="picture-label"> <b>Language:</b> English </div>
+		<img id="experiment-img" src="<?= Image::DEFAULT_DIRECTORY . "/$image_url"?>">
+		<div class="picture-label"> <b>Image:</b> <?=$question+1?>/<?=$total_questions?> </div>
+		<div class="picture-label"> <b>Language:</b> <?= (string)$language?> </div>
 		<div class="picture-label"> <b>Reaction Time:</b> 3452 ms </div>
 	</div>
 	

@@ -20,4 +20,18 @@ class Util {
 		}
 		return $ans;
 	}
+	
+	// Remove obvious special characters from user-generated input
+	static public function Sanitize($data) {
+	  $data = trim($data);
+	  $data = stripslashes($data);
+	  $data = htmlspecialchars($data);
+	  return $data;
+	}
+	
+	// Get some parameter from the $_REQUEST
+	static public function GetRequestParameter($key) {
+		if (!isset($_REQUEST[$key]) || $_REQUEST[$key] == null) return null;
+		return self::Sanitize($_REQUEST[$key]);
+	}
 }

@@ -9,8 +9,6 @@
 require_once "includes/env.php";
 require_once "includes/quiz-session.php";
 
-const SESSION_TAG = 'session';
-
 // Helper functions
 function GoToPage($page, $msg=null) {
 	global $ABS_ROOT, $session_id;
@@ -18,9 +16,10 @@ function GoToPage($page, $msg=null) {
 	$file_name = $_SERVER['SCRIPT_FILENAME'];
 	if (strpos($file_name, $page) !== false) return;
 	
+	$append = "?";
 	$url = "$ABS_ROOT/$page";
-	if (!empty($session_id)) $url .= "?session=$session_id";
-	if (!empty($msg)) $url .= "?msg=$msg";
+	if (!empty($session_id)) { $url .= $append . "session=$session_id"; $append = '&'; }
+	if (!empty($msg)) { $url .= $append . "msg=$msg"; $append = '&'; }
 	
 	header("Location: $url");
 	die();
@@ -32,19 +31,9 @@ function GoToImagePage($msg=null) { GoToPage("image-query.php",$msg); }
 function GoToResultsPage($msg=null) { GoToPage("results.php",$msg); }
 ////
 
-
-// Checks for session id existence
-// These will break the script if session_id doesn't exist
-if ($_SERVER["REQUEST_METHOD"] != "GET") return GoToHomePage();
-if (!isset($_GET[SESSION_TAG]) || empty($_GET[SESSION_TAG])) return GoToHomePage();
-
-// Now recover the actual quiz session (from the database)
-$quiz_session = null;
-try {
-	$session_id = $_GET[SESSION_TAG];
-	$quiz_session = new QuizSession($session_id);
-} catch (Exception $e) {
-	GoToHomePage("Invalid session id.");
+$result = include_once 'session-handler.php'; // $user, $quiz, and $quiz_session are now accessible 
+if ($result == false || !isset($quiz_session)) {
+	return GoToHomePage("Invalid session id.");
 }
 
 // Now we can check the quiz-session status to see where we should redirect to
@@ -72,11 +61,3 @@ switch ($quiz_session->status()) {
 }
 
 // If you get here, it means the user is on the correct page
-
-// Get the related user and quiz instances as well
-$user = new User($quiz_session->userID());
-$quiz = new Quiz($quiz_session->quizID());
-
-// $user, $quiz, and $quiz_session are now accessible on the front-end
-
-

@@ -30,30 +30,13 @@ class Quiz extends DBObject {
 		if (func_num_args() == 1 && is_string($q_per_lang)) {
 			$this->_constructFromId($q_per_lang);
 			$this->languages = Language::FromJSONArray($this->languages);
+			$this->questions = json_decode($this->questions);
 		} else {
 			$this->languages = $languages;
 			$this->questions_per_language = $q_per_lang;
 			$this->creator = $user->id();
 			$this->creation_time = time();
 		}
-	}
-	
-	public function language($i) {
-		return $this->languages[$i];
-	}
-	
-	public function languages() {
-		return $this->languages;
-	}
-	
-	public function questionsPerLang() {
-		return $this->questions_per_language;
-	}
-	
-	public function totalQuestions() {
-		$num_languages = count($this->languages);
-		$total = $this->questions_per_language * $num_languages;
-		return $total;
 	}
 	
 	// Scans a directory for all images
@@ -88,5 +71,31 @@ class Quiz extends DBObject {
 		}
 	}
 	
+	// Get the i^{th} language
+	public function language($i) {
+		return $this->languages[$i];
+	}
 	
+	// Get the list of languages
+	public function languages() {
+		return $this->languages;
+	}
+	
+	// How many questions per language
+	public function questionsPerLang() {
+		return $this->questions_per_language;
+	}
+	
+	// total number of questions
+	public function totalQuestions() {
+		$num_languages = count($this->languages);
+		$total = $this->questions_per_language * $num_languages;
+		return $total;
+	}
+	
+	public function image($lang, $quest) {
+		if ($lang >= count($this->languages)) return null;
+		if ($quest >= $this->questionsPerLang()) return null;
+		return $this->questions[$lang][$quest];
+	}
 }

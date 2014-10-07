@@ -77,6 +77,15 @@ class DBObject {
 		$this->_id = uniqid();		// Every object in the database has a random hash
 	}
 	
+	// If you construct with just an id, we should interpret this as a "get" request
+	// and read it from the database.
+	// ASSUMES the DBObject::__constructor has already been called
+	protected function _constructFromId($id) {
+		// HACK: This function relies on the details of the get() function
+		$this->_id = $id;		// first overwrite the id
+		return $this->get();	// then overwrite everything else
+	}
+	
 	public function id() {
 		return $this->_id;
 	}
@@ -89,6 +98,19 @@ class DBObject {
 			else $type = "NUMERIC";
 		}
 		return $type;
+	}
+	
+	protected function encodedFieldValues() {
+		$values = array();
+		foreach ($this->fields as $field) {
+			$v = $this->$field;
+			if (is_object($v) or is_array($v))
+				$values[$field] = json_encode($v);
+			else
+				$values[$field] = $v;
+		}
+		$values['id'] = $this->id();
+		return $values;
 	}
 	
 	// Creates a table for this type of object (pass the connection object)
@@ -147,16 +169,7 @@ class DBObject {
 		// Prepare to construct a sql query string from the current object
 		$column_list = implode(',',$this->columns) . ",ID";
 		$var_list = ':' . implode(',:', $this->fields) . ",:id";
-		$values = array();
-		foreach ($this->fields as $field) {
-			$v = $this->$field;
-			if (is_object($v) or is_array($v))
-				$values[$field] = json_encode($v);
-			else
-				$values[$field] = $v;
-		}
-		$values['id'] = $this->id();
-		
+		$values = $this->encodedFieldValues();
 		$query_string = "INSERT INTO $this->table ($column_list) VALUES ($var_list)";
 		
 		// Execute the query
@@ -187,13 +200,44 @@ class DBObject {
 		return true;
 	}
 	
-	// If you construct with just an id, we should interpret this as a "get" request
-	// and read it from the database.
-	// ASSUMES the DBObject::__constructor has already been called
-	protected function _constructFromId($id) {
-		// HACK: This function relies on the details of the get() function
-		$this->_id = $id;		// first overwrite the id
-		return $this->get();	// then overwrite everything else
+	// Saves (writes) the object to the database
+	public function save($conn=null) {
+		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
+		
+		global $AUTO_UPDATE_DB;
+
+		if (empty($this->columns) or empty($this->table)) {
+			throw new Exception("Cannot call DB::save without defining table name and columns");
+		}
+		
+		// Check to create the table first
+		// NOTE: This is like 3 or 4 times slower AT LEAST; and probably volatile
+		// Turn off $AUTO_UPDATE_DB in production
+		if ($AUTO_UPDATE_DB) {
+			$this->createTable($conn);
+			$this->alterTable($conn);
+		}
+		
+		// Prepare to construct a sql query string from the current object
+		$query_string = "UPDATE $this->table SET ";
+		$comma = false;
+		foreach($this->columns as $idx => $column) {
+			$field = $this->fields[$idx];
+			if ($comma) $query_string .= ', ';
+			$query_string .= "$column=:$field";
+			$comma = true;
+		}
+		$query_string .= " WHERE ID=:id";
+		
+		// Get the set of values to populate
+		$values = $this->encodedFieldValues();
+		
+		// Execute the query
+		$stmt = $conn->prepare($query_string);
+		$stmt->execute($values);
+		
+		// Returns true if the update was successful
+		return (bool)$stmt->rowCount();
 	}
 }
 

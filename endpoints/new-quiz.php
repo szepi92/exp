@@ -7,35 +7,29 @@ require_once "includes/user.php";
 require_once "includes/language.php";
 require_once "includes/image.php";
 require_once "includes/quiz-session.php";
+require_once "includes/util.php";
 
 /*
+This is responsible for creating the quiz,user, and session objects.
+It also inserts them into the back-end (database).
+
 When this page is hit, it expects information to be in the $_POST variable.
 It will validate the info and redirect to instructions.php once complete.
-This is also responsible for creating the quiz,user, and session objects.
-It also inserts them into the back-end (database).
 */
 
 // Only continue if we are "POST"-ing
 if ($_SERVER["REQUEST_METHOD"] != "POST") return;
 
 
-// Remove obvious special characters
-function sanitize($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
-
 // Extract the data
-$first_name      = sanitize($_POST['FirstName']);
-$last_name       = sanitize($_POST['LastName']);
-$email           = sanitize($_POST['Email']);
-$birthday        = sanitize($_POST['Birthday']);
-$country         = sanitize($_POST['Country']);
-$relocation      = sanitize($_POST['Relocation']);
-$first_language  = sanitize($_POST['FirstLanguage']);
-$second_language = sanitize($_POST['SecondLanguage']);
+$first_name      = Util::Sanitize($_POST['FirstName']);
+$last_name       = Util::Sanitize($_POST['LastName']);
+$email           = Util::Sanitize($_POST['Email']);
+$birthday        = Util::Sanitize($_POST['Birthday']);
+$country         = Util::Sanitize($_POST['Country']);
+$relocation      = Util::Sanitize($_POST['Relocation']);
+$first_language  = Util::Sanitize($_POST['FirstLanguage']);
+$second_language = Util::Sanitize($_POST['SecondLanguage']);
 
 // This will be returned to the front-end if necessary
 $ERROR = null;

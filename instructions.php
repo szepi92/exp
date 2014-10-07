@@ -1,6 +1,6 @@
 <?php
 	require_once 'includes/env.php';
-	require_once 'endpoints/session-redirect.php';	// this will parse any submitted info
+	require_once 'endpoints/session-redirect.php';	// this find the $quiz_session, $user, and $quiz
 ?>
 <html lang="en">
   <head>
@@ -22,7 +22,9 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
-	
+	<!-- Custom javascript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
   </head>
   <body>
   
@@ -45,7 +47,7 @@
 		</p>
 		<?php $URL = "$ABS_ROOT/instructions.php?session=" . $quiz_session->id(); ?>
 		<p>
-			<strong>To avoid having to start the experiment over in case you close this window or your computer crashes, save this link now and use it to continue where you left off: <a href="<?=$URL?>"> <?=$URL?> </a> </strong>
+			<strong>To avoid having to start the experiment over in case you close this window or your computer crashes, copy this link now and use it to continue where you left off later: <a href="<?=$URL?>"> <?=$URL?> </a> </strong>
 		</p>
 	</div>
 	
@@ -67,12 +69,12 @@
 		<p>
 			<h4>Get ready! Respond to the following 250 images in <?= $quiz->language(0) ?>.</h4>
 		</p>
-	<a id="begin" class="btn" href="image-query.php"> Begin Experiment </a>
+		
+		<a id="begin" class="btn" href="image-query.php?session=<?=$quiz_session->id()?>"> Begin Experiment </a>
 	</div>
 	
 	
     <!-- Library javascript files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>

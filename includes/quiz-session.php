@@ -37,8 +37,7 @@ class QuizSession extends DBObject {
 
 		// Overloaded constructor (get with id) if necessary
 		if (func_num_args() == 1 && is_string($quiz)) {
-			if ($this->_constructFromId($quiz) !== false)
-				$this->status = SessionStatus::READY;
+			$this->_constructFromId($quiz);
 		} else {
 			$this->quiz_id = $quiz->id();
 			$this->user_id = $user->id();
@@ -56,5 +55,32 @@ class QuizSession extends DBObject {
 	
 	public function quizID() {
 		return $this->quiz_id;
+	}
+	
+	public function currentLanguage() {
+		return $this->current_language;
+	}
+	
+	public function currentQuestion() {
+		return $this->current_question;
+	}
+	
+	// Setters (no real validation)
+	
+	public function setLanguage($i) {
+		$this->current_language = $i;
+	}
+	
+	public function setQuestion($q) {
+		$this->current_question = $q;
+	}
+	
+	public function setStatus($s) {
+		$this->status = $s;
+	}
+	
+	public function start($timestamp) {
+		$this->setStatus(SessionStatus::IN_PROGRESS);
+		$this->start_time = $timestamp;
 	}
 }
