@@ -1,6 +1,7 @@
 <?
 	require_once 'includes/env.php';
 	require_once 'endpoints/new-quiz.php';	// this will parse any submitted info
+	require_once 'endpoints/session-redirect.php';	// this will parse any submitted info
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +38,7 @@
 	</div>
 	<?php } ?>
 	
-    <div id="title">
+	<div id="title">
 		<h1>Hybrids of Canada: Language Experiment</h1>
 	</div>
 	

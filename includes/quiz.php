@@ -20,16 +20,26 @@ class Quiz extends DBObject {
 	protected $creator = "";				// user id of the person who created this quiz
 	protected $creation_time = 0;			// when was this quiz created
 	
-	public function __construct($q_per_lang, $languages, $user) {
+	public function __construct($q_per_lang, $languages=null, $user=null) {
 		// Do the parent (DBObject) stuff
 		$private_vars = array_keys(get_class_vars(__CLASS__));
 		$columns = array_map(array('Util','MakeTitleCase'), $private_vars);
-		parent::__construct(self::TABLE_NAME, $columns, $private_vars);		
+		parent::__construct(self::TABLE_NAME, $columns, $private_vars);	
 		
-		$this->languages = $languages;
-		$this->questions_per_language = $q_per_lang;
-		$this->creator = $user->id();
-		$this->creation_time = time();
+		// Overloaded constructor (get with id)
+		if (func_num_args() == 1 && is_string($q_per_lang)) {
+			$this->_constructFromId($q_per_lang);
+			$this->languages = Language::FromJSONArray($this->languages);
+		} else {
+			$this->languages = $languages;
+			$this->questions_per_language = $q_per_lang;
+			$this->creator = $user->id();
+			$this->creation_time = time();
+		}
+	}
+	
+	public function language($i) {
+		return $this->languages[$i];
 	}
 	
 	public function languages() {

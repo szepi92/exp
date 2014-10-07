@@ -12,4 +12,12 @@ class Util {
 		}
 		return implode("",$matches);
 	}
+	
+	static public function MakeAssocArray($keys, $values) {
+		$ans = array();
+		foreach ($keys as $idx => $key) {
+			$ans[$key] = $values[$idx];
+		}
+		return $ans;
+	}
 }

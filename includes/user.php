@@ -17,17 +17,24 @@ class User extends DBObject {
 	protected $relocation_date	= 0;	// UNIX time stamp
 	protected $languages		= array();
 	
-	public function __construct($first_name, $last_name, $email, $birthday, $country, $relocation, $languages) {
+	public function __construct($first_name, $last_name=null, $email=null, $birthday=null, $country=null, $relocation=null, $languages=null) {
+		// Do parent constructor stuff first
 		$private_vars = array_keys(get_class_vars(__CLASS__));
 		$columns = array_map(array('Util','MakeTitleCase'), $private_vars);
 		parent::__construct(self::TABLE_NAME, $columns, $private_vars);
 		
-		$this->first_name = $first_name;
-		$this->last_name = $last_name;
-		$this->email = $email;
-		$this->birthday = $birthday;
-		$this->country = $country;
-		$this->relocation = $relocation;
-		$this->languages = $languages;
+		// Overloaded constructor (get with id) if necessary
+		if (func_num_args() == 1 && is_string($first_name)) {
+			$this->_constructFromId($first_name);
+			$this->languages = Language::FromJSONArray($this->languages);
+		} else {
+			$this->first_name = $first_name;
+			$this->last_name = $last_name;
+			$this->email = $email;
+			$this->birthday = $birthday;
+			$this->country = $country;
+			$this->relocation = $relocation;
+			$this->languages = $languages;
+		}
 	}
 }

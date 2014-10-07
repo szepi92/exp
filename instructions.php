@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+	require_once 'includes/env.php';
+	require_once 'endpoints/session-redirect.php';	// this will parse any submitted info
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -29,19 +32,20 @@
 	
 	<div class="instruction-box">
 		<p>
-			This experiment measures how fast you think in 'First Language' and 'Second Language'. The program records your response and analyzes the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your respone. 
+			This experiment measures how fast you think in <?= $quiz->language(0) ?> and <?= $quiz->language(1) ?>. The program records your response and analyzes the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your respone. 
 		</p>
 		<p>
 			You will see an image on the screen and all you have to do is say what it is as fast as you can. After you see your reaction time appear under the picture, press the spacebar to load the next image. 
 		</p>
 		<p>
-			First, you will go through a set of 250 images in 'First Language', then another set of 250 images in 'Second Language'. 
+			First, you will go through a set of 250 images in <?= $quiz->language(0) ?>, then another set of 250 images in <?= $quiz->language(1) ?>. 
 		</p>
 		<p>
 			You can take a break whenever you like while completing the experiment - just press the spacebar when you are ready to continue.
 		</p>
+		<?php $URL = "$ABS_ROOT/instructions.php?session=" . $quiz_session->id(); ?>
 		<p>
-			To avoid having to start the experiment over in case you close this window or your computer crashes, save this link now and use it to continue where you left off: <a href="..."> "url" </a>
+			<strong>To avoid having to start the experiment over in case you close this window or your computer crashes, save this link now and use it to continue where you left off: <a href="<?=$URL?>"> <?=$URL?> </a> </strong>
 		</p>
 	</div>
 	
@@ -61,15 +65,10 @@
 		<br/>
 		<br/>
 		<p>
-			<h4>Get ready! Respond to the following 250 images in 'First Language'.</h4>
+			<h4>Get ready! Respond to the following 250 images in <?= $quiz->language(0) ?>.</h4>
 		</p>
 	<a id="begin" class="btn" href="image-query.php"> Begin Experiment </a>
 	</div>
-	
-	
-
-	
-
 	
 	
     <!-- Library javascript files -->

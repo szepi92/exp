@@ -28,14 +28,33 @@ class QuizSession extends DBObject {
 	protected $status = SessionStatus::INVALID;
 	protected $start_time = 0;
 	
-	public function __construct($quiz, $user) {
-		$this->quiz_id = $quiz->id();
-		$this->user_id = $user->id();
-		$this->status = SessionStatus::READY;
-		
+	// NOTE: Overloaded constructor. Can pass a single id in as well
+	public function __construct($quiz, $user=null) {
 		// Do the parent (DBObject) stuff
 		$private_vars = array_keys(get_class_vars(__CLASS__));
 		$columns = array_map(array('Util','MakeTitleCase'), $private_vars);
-		parent::__construct(self::TABLE_NAME, $columns, $private_vars);		
+		parent::__construct(self::TABLE_NAME, $columns, $private_vars);	
+
+		// Overloaded constructor (get with id) if necessary
+		if (func_num_args() == 1 && is_string($quiz)) {
+			if ($this->_constructFromId($quiz) !== false)
+				$this->status = SessionStatus::READY;
+		} else {
+			$this->quiz_id = $quiz->id();
+			$this->user_id = $user->id();
+			$this->status = SessionStatus::READY;
+		}
+	}
+	
+	public function status() {
+		return $this->status;
+	}
+	
+	public function userID() {
+		return $this->user_id;
+	}
+	
+	public function quizID() {
+		return $this->quiz_id;
 	}
 }

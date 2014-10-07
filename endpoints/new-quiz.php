@@ -71,13 +71,15 @@ try {
 }
 
 // Save them to the database
+$good = true;
 $conn = null;
 try {
 	$conn = DB::Connect();	// connect to default database
 	$conn->beginTransaction();
-		$quiz->insert($conn);
-		$user->insert($conn);
-		$quiz_session->insert($conn);
+		$good = $good && $quiz->insert($conn);
+		$good = $good && $user->insert($conn);
+		$good = $good && $quiz_session->insert($conn);
+		if (!$good) throw new Exception("One or more INSERT queries failed quietly.");
 	$conn->commit();
 } catch(Exception $e) {
 	if ($conn != null) $conn->rollBack();

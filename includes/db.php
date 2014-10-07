@@ -4,6 +4,7 @@
 */
 
 require_once "includes/env.php";
+require_once "includes/util.php";
 
 // A class to wrap PDO connection strings
 class PDOConnector {
@@ -61,6 +62,7 @@ class DBObject {
 	private $table = "";
 	private $columns = array();	// the array of columns (as named in the database / SQL)
 	private $fields = array();	// a parallel array to $columns: which fields to get from the child object
+	private $map = array();
 	private $_id = "";
 	
 	// Provide the underlying table name and the set of relevant columns
@@ -71,6 +73,7 @@ class DBObject {
 		$this->table = $tbl;
 		$this->columns = $column_array;
 		$this->fields = $field_array;
+		$this->map = Util::MakeAssocArray($this->columns,$this->fields);
 		$this->_id = uniqid();		// Every object in the database has a random hash
 	}
 	
@@ -89,7 +92,9 @@ class DBObject {
 	}
 	
 	// Creates a table for this type of object (pass the connection object)
-	protected function createTable($conn) {
+	protected function createTable($conn=null) {
+		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
+
 		// Construct the "CREATE TABLE" query
 		$CREATE_QUERY = "CREATE TABLE IF NOT EXISTS $this->table (\n ID TEXT PRIMARY KEY NOT NULL";
 		foreach ($this->columns as $idx => $column) {
@@ -102,7 +107,9 @@ class DBObject {
 	}
 	
 	// Try to alter the table so that the columns match for this type of object
-	protected function alterTable($conn) {
+	protected function alterTable($conn=null) {
+		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
+
 		foreach ($this->columns as $idx => $column) {
 			$field = $this->fields[$idx];
 			$type = $this->getFieldType($this->$field);
@@ -120,9 +127,11 @@ class DBObject {
 	}
 	
 	// Insert this object as a row into the database
-	public function insert($conn) {
+	public function insert($conn=null) {
+		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
+
 		global $AUTO_UPDATE_DB;
-		
+
 		if (empty($this->columns) or empty($this->table)) {
 			throw new Exception("Cannot call DB::insert without defining table name and columns");
 		}
@@ -140,7 +149,11 @@ class DBObject {
 		$var_list = ':' . implode(',:', $this->fields) . ",:id";
 		$values = array();
 		foreach ($this->fields as $field) {
-			$values[$field] = json_encode($this->$field);
+			$v = $this->$field;
+			if (is_object($v) or is_array($v))
+				$values[$field] = json_encode($v);
+			else
+				$values[$field] = $v;
 		}
 		$values['id'] = $this->id();
 		
@@ -152,6 +165,35 @@ class DBObject {
 		
 		// Returns true if the insertion was successful
 		return (bool)$stmt->rowCount();
+	}
+	
+	// This gets (overwrites) an object from the table given the id
+	public function get($conn=null) {
+		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
+		
+		// Execute the query
+		$query_string = "SELECT * FROM $this->table WHERE ID = :id";
+		$stmt = $conn->prepare($query_string);
+		$stmt->execute(array('id' => $this->id()));
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		// Map the results from ColumnNames to object_fields
+		if ($result === FALSE) return FALSE;
+		foreach ($result as $column => $value) {
+			if ($column == "ID") continue;
+			$field = $this->map[$column];
+			$this->$field = $value;
+		}
+		return true;
+	}
+	
+	// If you construct with just an id, we should interpret this as a "get" request
+	// and read it from the database.
+	// ASSUMES the DBObject::__constructor has already been called
+	protected function _constructFromId($id) {
+		// HACK: This function relies on the details of the get() function
+		$this->_id = $id;		// first overwrite the id
+		return $this->get();	// then overwrite everything else
 	}
 }
 
