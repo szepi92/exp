@@ -28,11 +28,11 @@ class User extends DBObject {
 			$this->_constructFromId($first_name);
 			$this->languages = Language::FromJSONArray($this->languages);
 		} else {
-			$this->first_name = $first_name;
-			$this->last_name = $last_name;
+			$this->first_name = ucfirst($first_name);
+			$this->last_name = ucfirst($last_name);
 			$this->email = $email;
 			$this->birthday = $birthday;
-			$this->country = $country;
+			$this->country = ucfirst($country);
 			$this->relocation = $relocation;
 			$this->languages = $languages;
 		}

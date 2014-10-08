@@ -17,22 +17,33 @@ When this page is hit, it expects information to be in the $_POST variable.
 It will validate the info and redirect to instructions.php once complete.
 */
 
-// Only continue if we are "POST"-ing
-if ($_SERVER["REQUEST_METHOD"] != "POST") return;
-
-
 // Extract the data
-$first_name      = Util::Sanitize($_POST['FirstName']);
-$last_name       = Util::Sanitize($_POST['LastName']);
-$email           = Util::Sanitize($_POST['Email']);
-$birthday        = Util::Sanitize($_POST['Birthday']);
-$country         = Util::Sanitize($_POST['Country']);
-$relocation      = Util::Sanitize($_POST['Relocation']);
-$first_language  = Util::Sanitize($_POST['FirstLanguage']);
-$second_language = Util::Sanitize($_POST['SecondLanguage']);
+$first_name      = Util::GetRequestParameter('FirstName');
+$last_name       = Util::GetRequestParameter('LastName');
+$email           = Util::GetRequestParameter('Email');
+$birthday        = Util::GetRequestParameter('Birthday');
+$country         = Util::GetRequestParameter('Country');
+$relocation      = Util::GetRequestParameter('Relocation');
+$first_language  = Util::GetRequestParameter('FirstLanguage');
+$second_language = Util::GetRequestParameter('SecondLanguage');
 
 // This will be returned to the front-end if necessary
 $ERROR = null;
+
+// Only continue if we are "POST"-ing
+if ($_SERVER["REQUEST_METHOD"] != "POST") return;
+
+// Check for empty data
+if (empty($first_name)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "First Name is required.");
+if (empty($last_name)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Last Name is required.");
+if (empty($country)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Country of Origin is required.");
+if (empty($email)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "E-Mail Address is required.");
+if (empty($first_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "First Language is required.");
+if (empty($second_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Second Language is required.");
+
+// Check the email address to avoid hassle later
+if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+	return $ERROR = new Error(ErrorMessages::BAD_DATA, "Please specify a valid E-Mail Address.");
 
 // Further parse the dates (into UNIX time stamps)
 $birthday = strtotime($birthday);

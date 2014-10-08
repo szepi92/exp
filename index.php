@@ -1,6 +1,6 @@
 <?
 	require_once 'includes/env.php';
-	require_once 'endpoints/new-quiz.php';	// this will parse any submitted info
+	require_once 'endpoints/new-quiz.php';	// this will parse any submitted info (the variables are now in scope)
 	require_once 'endpoints/session-redirect.php';	// this will redirect if session id is given
 ?>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 			<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 		</button>
 		<strong>Oops.</strong>
-		<?php if ($DEBUG) echo $ERROR->exception->getMessage(); else echo $ERROR->friendly_message; ?>
+		<?php if ($DEBUG) echo $ERROR->exception->getMessage() . " "; echo $ERROR->friendly_message; ?>
 	</div>
 	<?php } ?>
 	
@@ -43,14 +43,14 @@
 	</div>
 	
 	<form id="form" action="index.php" method="post">
-		<span class="form-name">First Name:</span> <input class="input-box form-control" type="text" name="FirstName"> 
-		<span class="form-name">Last Name:</span> <input class="input-box form-control" type="text" name="LastName">
-		<span class="form-name">Date of Birth:</span> <input class="input-box form-control" type="date" name="Birthday" placeholder="mm/dd/yyyy"> 
-		<span class="form-name">Country of Origin:</span> <input class="input-box form-control" type="text" name="Country"> 
-		<span class="form-name">Date of Relocation:</span> <input class="input-box form-control" type="date" name="Relocation" placeholder="mm/dd/yyyy"> 
-		<span class="form-name">E-Mail Address:</span> <input class="input-box form-control" type="email" name="Email"> 
-		<span class="form-name">First Language:</span> <input class="input-box form-control" type="text" name="FirstLanguage">
-		<span class="form-name">Second Language:</span> <input class="input-box form-control" type="text" name="SecondLanguage">
+		<span class="form-name">First Name:</span> <input class="input-box form-control" type="text" name="FirstName" value="<?=$first_name?>">
+		<span class="form-name">Last Name:</span> <input class="input-box form-control" type="text" name="LastName" value="<?=$last_name?>">
+		<span class="form-name">Date of Birth: (Optional)</span> <input class="input-box form-control" type="text" name="Birthday" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">Country of Origin:</span> <input class="input-box form-control" type="text" name="Country" value="<?=$country?>"> 
+		<span class="form-name">Date of Relocation: (Optional)</span> <input class="input-box form-control" type="text" name="Relocation" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">E-Mail Address:</span> <input class="input-box form-control" type="text" name="Email" value="<?=$email?>"> 
+		<span class="form-name">First Language:</span> <input class="input-box form-control" type="text" name="FirstLanguage" value="<?=$first_language?>">
+		<span class="form-name">Second Language:</span> <input class="input-box form-control" type="text" name="SecondLanguage" value="<?=$second_language?>">
 		<input class="btn" id="submit-button" type="submit" value="Submit">
 	</form>
 	
