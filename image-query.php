@@ -30,11 +30,48 @@
 		var QUIZ_CURRENT_QUESTION = <?=$quiz_session->currentQuestion()?>;
 	</script>
 	<script src="js/request.js"></script>
-	
+	<script src="js/recording.js"></script>
 	<script>
+		// Interface with recording.js and request.js
+		var enable_continue = false;
+		
+		$(document).ready(function(){
+			
+			// When a voice is heard, remember the reaction time
+			window.voiceHeard = function() {
+				var LAG_TIME = 600;	// There's 600ms of computer lag (I'm guessing)
+				if (!window.reactionTime) {
+					window.reactionTime = Math.max(Date.now() - window.recordingStarted - LAG_TIME, 100);
+					console.log("Reaction Time: ", window.reactionTime);
+					$("#reaction-time").text(window.reactionTime);
+					$("#reaction-label").show();
+					$("#current-status").html("<b>Recording...</b>");
+				}
+			}
+			
+			// When the user is done speaking.
+			window.voiceDone = function() {
+				if (!window.resultRecorded) {
+					window.resultRecorded = true;
+					recordResult(window.reactionTime, savedCallback);
+					$("#current-status").html("<b>Saving...</b> ");
+				}
+			}
+			
+			// When the result is successfully saved to the back-end
+			function savedCallback() {
+				$("#current-status").html("<b>Result recorded. Press spacebar for next image.</b> ");
+				enable_continue = true;
+			}
+		
+			initMedia();
+		});
+	
+		// Space bar press to continue
 		$(document).keypress(function(event){
-			if (event.which == 32) {
-				recordResult(100);
+			var SPACE_KEY = 32;
+			if (event.which == SPACE_KEY && enable_continue) {
+				window.location.href = REDIRECT_URL;
 			}
 		});
 	</script>
@@ -53,7 +90,8 @@
 		<img id="experiment-img" src="<?= Image::DEFAULT_DIRECTORY . "/$image_url"?>">
 		<div class="picture-label"> <b>Image:</b> <?=$question+1?>/<?=$total_questions?> </div>
 		<div class="picture-label"> <b>Language:</b> <?= (string)$language?> </div>
-		<div class="picture-label"> <b>Reaction Time:</b> 3452 ms </div>
+		<div id="reaction-label" style="display:none" class="picture-label"> <b>Reaction Time: </b> <span id="reaction-time">0</span> ms</div>
+		<div id="current-status" class="picture-label"> <b>Speak!</b> </div>
 	</div>
 	
 	

@@ -13,7 +13,14 @@ function sendQuery(query_param, redirect) {
 			console.log("Success");
 			console.log(query_param);
 			console.log(data);
-			if (!!redirect) window.location.href = REDIRECT_URL;
+			if (!!redirect) {
+				if (_.isString(redirect)) window.location.href = redirect;
+				else if (_.isBoolean(redirect)) window.location.href = REDIRECT_URL;
+				else if (_.isFunction(redirect)) redirect();
+				else {
+					console.log("Unknown redirect or callback: ", redirect);
+				}
+			}
 		} else {
 			// TODO: Remove debug statements
 			console.log("Error occurred when sending data to server.");
@@ -49,7 +56,7 @@ function startNextLanguage(language) {
 
 // From image-query page. Sends request to record-result
 // TODO: Should save sound-file too. But for now just save reaction time
-function recordResult(reaction_time) {
+function recordResult(reaction_time, callback) {
 	try {
 		// Construct the object to be sent to the server
 		var action = "record-result";
@@ -68,9 +75,8 @@ function recordResult(reaction_time) {
 		};
 		
 		// Send it!
-		sendQuery(query_param, true);
+		sendQuery(query_param, callback);
 	} catch (e) {
-		console.log ("Exception!");
-		console.log (e);
+		console.log ("Error while recording result! ", e);
 	}
 }
