@@ -33,7 +33,7 @@ function GoToHomePage($msg=null) {
 function GoToInstructionsPage($msg=null) { GoToPage("instructions.php",$msg); }
 function GoToNewLanguagePage($msg=null) { GoToPage("new-language.php",$msg); }
 function GoToImagePage($msg=null) { GoToPage("image-query.php",$msg); }
-function GoToResultsPage($msg=null) { GoToPage("results.php",$msg); }
+function GoToResultsPage($msg=null) { GoToPage("results-temp.php",$msg); }
 ////
 
 $result = include_once 'session-handler.php'; // $user, $quiz, and $quiz_session are now accessible 

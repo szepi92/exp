@@ -37,4 +37,14 @@ class User extends DBObject {
 			$this->languages = $languages;
 		}
 	}
+	
+	public function firstName() {
+		return $this->first_name;
+	}
+	public function lastName() {
+		return $this->last_name;
+	}
+	public function fullName() {
+		return $this->first_name . " " . $this->last_name;
+	}
 }
