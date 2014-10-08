@@ -24,7 +24,12 @@
 	
 	<!-- Custom javascript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+	<script>var QUIZ_SESSION_ID = "<?=$quiz_session->id()?>";</script>
+	<script src="js/request.js"></script>
+	
+	<?php
+		$num_questions = $quiz->questionsPerLang();
+	?>
   </head>
   <body>
   
@@ -34,13 +39,13 @@
 	
 	<div class="instruction-box">
 		<p>
-			This experiment measures how fast you think in <?= $quiz->language(0) ?> and <?= $quiz->language(1) ?>. The program records your response and analyzes the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your respone. 
+			This experiment measures how fast you think in <?= $quiz->language(0) ?> and <?= $quiz->language(1) ?>. The program records your response and analyzes the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your response. 
 		</p>
 		<p>
 			You will see an image on the screen and all you have to do is say what it is as fast as you can. After you see your reaction time appear under the picture, press the spacebar to load the next image. 
 		</p>
 		<p>
-			First, you will go through a set of 250 images in <?= $quiz->language(0) ?>, then another set of 250 images in <?= $quiz->language(1) ?>. 
+			First, you will go through a set of <?=$num_questions?> images in <?= $quiz->language(0) ?>, then another set of <?=$num_questions?> images in <?= $quiz->language(1) ?>. 
 		</p>
 		<p>
 			You can take a break whenever you like while completing the experiment - just press the spacebar when you are ready to continue.
@@ -67,10 +72,11 @@
 		<br/>
 		<br/>
 		<p>
-			<h4>Get ready! Respond to the following 250 images in <?= $quiz->language(0) ?>.</h4>
+			<h4>Get ready! Respond to the following <?=$num_questions?> images in <?= $quiz->language(0) ?>.</h4>
 		</p>
 		
-		<a id="begin" class="btn" href="image-query.php?session=<?=$quiz_session->id()?>"> Begin Experiment </a>
+		<!-- The actual action of this is set in javascript (request.js) -->
+		<a id="begin" class="btn" onclick="startNextLanguage(0); return false"> Begin Experiment </a>
 	</div>
 	
 	

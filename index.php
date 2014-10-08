@@ -1,7 +1,7 @@
 <?
 	require_once 'includes/env.php';
 	require_once 'endpoints/new-quiz.php';	// this will parse any submitted info
-	require_once 'endpoints/session-redirect.php';	// this will parse any submitted info
+	require_once 'endpoints/session-redirect.php';	// this will redirect if session id is given
 ?>
 <!DOCTYPE html>
 <html lang="en">

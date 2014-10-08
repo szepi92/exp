@@ -1,7 +1,6 @@
 <?php
 	require_once 'includes/env.php';
 	require_once 'endpoints/session-redirect.php';
-	//require_once 'endpoints/next-image.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +23,21 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+		var QUIZ_SESSION_ID = "<?=$quiz_session->id()?>";
+		var QUIZ_CURRENT_LANGUAGE = <?=$quiz_session->currentLanguage()?>;	// integer current language,question
+		var QUIZ_CURRENT_QUESTION = <?=$quiz_session->currentQuestion()?>;
+	</script>
+	<script src="js/request.js"></script>
+	
+	<script>
+		$(document).keypress(function(event){
+			if (event.which == 32) {
+				recordResult(100);
+			}
+		});
+	</script>
 	
   </head>
   <body>
@@ -44,7 +58,6 @@
 	
 	
     <!-- Library javascript files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>

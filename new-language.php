@@ -1,3 +1,7 @@
+<?php
+	require_once 'includes/env.php';
+	require_once 'endpoints/session-redirect.php';	// this find the $quiz_session, $user, and $quiz
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,28 +23,35 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
+	<!-- Custom javascript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>var QUIZ_SESSION_ID = "<?=$quiz_session->id()?>";</script>
+	<script src="js/request.js"></script>
+	
+	<?php
+		$firstLanguage  = $quiz->language(0);
+		$secondLanguage = $quiz->language(1);
+		$num_questions  = $quiz->questionsPerLang();
+	?>
 	
   </head>
   <body>
   
     <div class="instruction-box">
 		<div id="center-title" ><h3>Congratulations, you are halfway done!</h4> </div>
-		<h4>You've just completed 250 images in 'First Language'!</h4>
+		<h4>You've just completed <?=$num_questions?> images in '<?=$firstLanguage?>'!</h4>
 	</div>
 	
 	<div class="instruction-box">
 		<p>
-			<h4>Get ready! Respond to the following 250 images in 'Second Language'.</h4>
+			<h4>Get ready! Respond to the following <?=$num_questions?> images in '<?=$secondLanguage?>'.</h4>
 		</p>
-	<a id="begin" class="btn" href="image-query.php"> Continue </a>
+		<a id="begin" class="btn" onclick="startNextLanguage(1); return false"> Continue </a>
 	</div>
-	
-
 	
 	
 	
     <!-- Library javascript files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>

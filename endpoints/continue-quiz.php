@@ -36,22 +36,23 @@ if ($status == SessionStatus::READY) {
 	}
 	$quiz_session->start($timestamp);
 	if ($quiz_session->save()) return "Quiz now started.";
-	else return new Error("Could not start quiz.");
+	else return new Error(ErrorMessages::BAD_DB, "Could not start quiz.");
 } else if ($status == SessionStatus::LANGUAGE_DONE) {
 	$cur_language = $quiz_session->currentLanguage();
-	if (!isset($language) || $language != $cur_language + 1 || $language >= count($quiz->languages())) {
-		// Should be starting the next quiz
+	if (!isset($language) || $language != $cur_language || $language >= count($quiz->languages())) {
+		// Should be starting the next quiz (currentLanguage() will already be set)
 		return new Error(ErrorMessages::BAD_DATA);
 	}
 	
-	$quiz_session->setLanguage($language);
+	// These should already match
+	//$quiz_session->setLanguage($language);
 	$quiz_session->setQuestion(0);
 	$quiz_session->setStatus(SessionStatus::IN_PROGRESS);
-	$quiz_session->save();
-	return "Beginning the next language.";
+	if ($quiz_session->save()) return "Beginning the next language.";
+	else return new Error(ErrorMessages::BAD_DB, "Could not continue quiz");
 } else {
 	// Hack (ish)
-	return new Error("Session is presently " . $status . ".");
+	return new Error("Session is currently " . $status . ".");
 }
 
 

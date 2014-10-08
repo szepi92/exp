@@ -81,7 +81,7 @@ class DBObject {
 	// and read it from the database.
 	// ASSUMES the DBObject::__constructor has already been called
 	protected function _constructFromId($id) {
-		// HACK: This function relies on the details of the get() function
+		// HACK: This function relies on the return value of the get() function
 		$this->_id = $id;		// first overwrite the id
 		return $this->get();	// then overwrite everything else
 	}
@@ -149,6 +149,7 @@ class DBObject {
 	}
 	
 	// Insert this object as a row into the database
+	// NOTE: If the row already exists, use save() to update it.
 	public function insert($conn=null) {
 		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
 
@@ -197,10 +198,13 @@ class DBObject {
 			$field = $this->map[$column];
 			$this->$field = $value;
 		}
+		
+		$stmt->closeCursor();
 		return true;
 	}
 	
-	// Saves (writes) the object to the database
+	// Saves (UPDATES) the object in the database
+	// NOTE: The row must already exist. Otherwise, use INSERT
 	public function save($conn=null) {
 		if ($conn == null) $conn = DB::Connect();	// provide a default connection if none given
 		

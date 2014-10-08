@@ -28,9 +28,10 @@ class Quiz extends DBObject {
 		
 		// Overloaded constructor (get with id)
 		if (func_num_args() == 1 && is_string($q_per_lang)) {
-			$this->_constructFromId($q_per_lang);
-			$this->languages = Language::FromJSONArray($this->languages);
-			$this->questions = json_decode($this->questions);
+			if ($this->_constructFromId($q_per_lang)) {
+				$this->languages = Language::FromJSONArray($this->languages);
+				$this->questions = json_decode($this->questions);
+			}
 		} else {
 			$this->languages = $languages;
 			$this->questions_per_language = $q_per_lang;
@@ -79,6 +80,11 @@ class Quiz extends DBObject {
 	// Get the list of languages
 	public function languages() {
 		return $this->languages;
+	}
+	
+	// Get the count of languages
+	public function numLanguages() {
+		return count($this->languages);
 	}
 	
 	// How many questions per language

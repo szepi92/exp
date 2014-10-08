@@ -73,7 +73,7 @@ try {
 		$good = $good && $quiz->insert($conn);
 		$good = $good && $user->insert($conn);
 		$good = $good && $quiz_session->insert($conn);
-		if (!$good) throw new Exception("One or more INSERT queries failed quietly.");
+		if (!$good) throw new Exception(ErrorMessages::BAD_DB, "Could not define one or more objects (quiz, user, session).");
 	$conn->commit();
 } catch(Exception $e) {
 	if ($conn != null) $conn->rollBack();
