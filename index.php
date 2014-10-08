@@ -44,9 +44,9 @@
 	<form id="form" action="index.php" method="post">
 		<span class="form-name">First Name:</span> <input class="input-box form-control" type="text" name="FirstName" value="<?=$first_name?>">
 		<span class="form-name">Last Name:</span> <input class="input-box form-control" type="text" name="LastName" value="<?=$last_name?>">
-		<span class="form-name">Date of Birth: (Optional)</span> <input class="input-box form-control" type="text" name="Birthday" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">Date of Birth:</span> <input class="input-box form-control" type="text" name="Birthday" value="<?=$birthday?>" placeholder="mm/dd/yyyy"> 
 		<span class="form-name">Country of Origin:</span> <input class="input-box form-control" type="text" name="Country" value="<?=$country?>"> 
-		<span class="form-name">Date of Relocation: (Optional)</span> <input class="input-box form-control" type="text" name="Relocation" placeholder="mm/dd/yyyy"> 
+		<span class="form-name">Date of Relocation:</span> <input class="input-box form-control" type="text" name="Relocation" value="<?=$relocation?>" placeholder="mm/dd/yyyy"> 
 		<span class="form-name">E-Mail Address:</span> <input class="input-box form-control" type="text" name="Email" value="<?=$email?>"> 
 		<span class="form-name">First Language:</span> <input class="input-box form-control" type="text" name="FirstLanguage" value="<?=$first_language?>">
 		<span class="form-name">Second Language:</span> <input class="input-box form-control" type="text" name="SecondLanguage" value="<?=$second_language?>">

@@ -38,14 +38,22 @@ if ($VALIDATE_DATA) {
 	// Check for empty data
 	if (empty($first_name)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "First Name is required.");
 	if (empty($last_name)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Last Name is required.");
-	if (empty($country)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Country of Origin is required.");
 	if (empty($email)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "E-Mail Address is required.");
+	if (empty($birthday)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Birthday is required.");
+	if (empty($country)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Country of Origin is required.");
+	if (empty($relocation)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Relocation Date is required.");
 	if (empty($first_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "First Language is required.");
 	if (empty($second_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Second Language is required.");
 
 	// Check the email address to avoid hassle later
 	if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	return $ERROR = new Error(ErrorMessages::BAD_DATA, "Please specify a valid E-Mail Address.");
+	
+	// Check that date parsing works
+	$parsed_birthday = strtotime($birthday);
+	$parsed_relo = strtotime($relocation);
+	if (empty($parsed_birthday)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Invalid Birthday.");
+	if (empty($parsed_relo)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Invalid Relocation Date.");
 }
 
 // Further parse the dates (into UNIX time stamps)
