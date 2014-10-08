@@ -33,13 +33,13 @@ $mysql_connector = new PDOConnector(
 // Picks a default connection-string depending on the environment
 class DB {
 	static public function Connect() {
-		global $sqlite3_connector, $mysql_connector;
+		global $sqlite3_connector, $mysql_connector, $DB_TYPE;
 		
 		$DB_CONNECTOR = NULL;
-		if ($_SERVER['SERVER_NAME'] == 'localhost') {
-			$DB_CONNECTOR = $sqlite3_connector;
-		} else {
-			$DB_CONNECTOR = $mysql_connector;
+		switch ($DB_TYPE) {
+			case 'sqlite3': $DB_CONNECTOR = $sqlite3_connector; break;
+			case 'mysql': $DB_CONNECTOR = $mysql_connector; break;
+			default: $DB_CONNECTOR = $sqlite3_connector;
 		}
 		
 		$conn = new PDO(

@@ -73,7 +73,7 @@
 	
     <!-- Library javascript files -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>
   </body>
