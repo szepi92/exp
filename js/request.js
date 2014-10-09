@@ -2,7 +2,7 @@
  * Code so that we can talk to the server (ajax.php)
  */
 var AJAX_ENDPOINT = "ajax.php";
-var REDIRECT_URL = "image-query.php?session=" + window.QUIZ_SESSION_ID;
+var REDIRECT_URL = "image-query.php";
 
 // Sends an AJAX request to the server.
 // Optionally redirects to next image afterwards.
@@ -14,9 +14,9 @@ function sendQuery(query_param, redirect) {
 			console.log(query_param);
 			console.log(data);
 			if (!!redirect) {
-				if (_.isString(redirect)) window.location.href = redirect;
-				else if (_.isBoolean(redirect)) window.location.href = REDIRECT_URL;
-				else if (_.isFunction(redirect)) redirect();
+				if (_.isString(redirect)) window.customRedirect(redirect);
+				else if (_.isBoolean(redirect)) window.customRedirect(REDIRECT_URL);
+				else if (_.isFunction(redirect)) redirect(data);
 				else {
 					console.log("Unknown redirect or callback: ", redirect);
 				}
@@ -28,6 +28,28 @@ function sendQuery(query_param, redirect) {
 			console.log(data);
 		}
 	});
+}
+	
+// This is the function that redirects
+window.customRedirect = function(link) {
+	requestPage(link, function(data){
+		$("#page-content").html(data);
+	});
+}
+
+function requestPage(page_name, callback) {
+	var action = "get-page";
+	var timestamp = Math.floor (Date.now() / 1000);
+	var session_id = window.QUIZ_SESSION_ID;
+	
+	var query_param = {
+		type: action,
+		timestamp: timestamp,
+		session: session_id,
+		value: page_name
+	};
+	
+	$.get(AJAX_ENDPOINT, query_param, callback);
 }
 
 // From instructions page or new-language page.

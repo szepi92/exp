@@ -1,9 +1,6 @@
 <?php
 
 /*
-	TODO: This file is incomplete!!
-	
-	
 	AJAX requests to this file are used to record results for quiz sessions.
 	The parameters are given in the $_GET object as follows:
 	

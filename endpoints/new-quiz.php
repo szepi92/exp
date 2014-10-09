@@ -106,7 +106,7 @@ try {
 /// TODO: We need to email the session id to the user
 
 // Now that we're done, redirect the user
-$url = "$ABS_ROOT/instructions.php?session=" . $quiz_session->id();
+$url = "$ABS_ROOT/quiz.php?session=" . $quiz_session->id();
 header("Location: $url");
 die();
 

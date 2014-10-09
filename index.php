@@ -53,8 +53,6 @@
 		<input class="btn" id="submit-button" type="submit" value="Submit">
 	</form>
 	
-	
-	
     <!-- Library javascript files -->
     <script src="js/lib/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>

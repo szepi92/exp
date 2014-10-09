@@ -9,9 +9,6 @@ require_once 'includes/env.php';
 require_once 'includes/util.php';
 require_once 'includes/error.php';
 
-// Will return json
-header('Content-Type: application/json');
-
 function DoError($error) {
 	global $DEBUG;
 	
@@ -43,13 +40,21 @@ function DoResponse($msg="") {
 class ActionTypes {	// Enum
 	const PROCEED_TO_QUIZ = "proceed-to-quiz";
 	const RECORD_RESULT = "record-result";
+	const GET_PAGE = "get-page";
 };
 
 try {
 	$type = Util::GetRequestParameter("type");
 	if (empty($type)) throw new Exception(ErrorMessages::BAD_TYPE);
 	
-	// The end-points. Should only pass through one of them
+	// get-page is treated differently.
+	if ($type == ActionTypes::GET_PAGE) {
+		require_once "endpoints/get-page.php";
+		die();
+	}
+	
+	// The main end-points. Should only pass through one of them
+	header('Content-Type: application/json');
 	$result = false;
 	if ($type == ActionTypes::PROCEED_TO_QUIZ)
 		$result = include_once 'endpoints/continue-quiz.php';
