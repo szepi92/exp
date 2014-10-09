@@ -9,10 +9,6 @@ var REDIRECT_URL = "image-query.php";
 function sendQuery(query_param, redirect) {
 	$.get(AJAX_ENDPOINT, query_param, function (data) {
 		if (data.status == "ok") {
-			// TODO: Remove debug statements
-			console.log("Success");
-			console.log(query_param);
-			console.log(data);
 			if (!!redirect) {
 				if (_.isString(redirect)) window.customRedirect(redirect);
 				else if (_.isBoolean(redirect)) window.customRedirect(REDIRECT_URL);
@@ -32,6 +28,15 @@ function sendQuery(query_param, redirect) {
 	
 // This is the function that redirects
 window.customRedirect = function(link) {
+	window.enable_continue = false;
+	window.reactionTime = undefined;
+	window.resultRecorded = undefined;
+	window.recordingStarted = undefined;
+	
+	window.voiceHeard = function() {}
+	window.voiceDone = function() {}
+	window.keyHandler = function(){}
+
 	requestPage(link, function(data){
 		$("#page-content").html(data);
 	});
@@ -80,6 +85,13 @@ function startNextLanguage(language) {
 // TODO: Should save sound-file too. But for now just save reaction time
 function recordResult(reaction_time, callback) {
 	try {
+		// This is a hack!
+		if (!reaction_time) {
+			console.log("Error while recording result");
+			location.reload();
+			return;
+		}
+		
 		// Construct the object to be sent to the server
 		var action = "record-result";
 		var timestamp = Math.floor (Date.now() / 1000);

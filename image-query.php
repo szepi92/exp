@@ -16,9 +16,9 @@ window.recordingStarted = Date.now();
 
 // When a voice is heard, remember the reaction time
 window.voiceHeard = function() {
-	if (!window.reactionTime) {
+	if (!window.reactionTime && !!window.recordingStarted) {
 		var LAG_TIME = 300;	// HACK: There's 600ms of computer lag (I'm guessing)
-		window.reactionTime = Math.max(Date.now() - window.recordingStarted - LAG_TIME, 0);
+		window.reactionTime = Math.max(Date.now() - window.recordingStarted - LAG_TIME, 2);
 		$("#reaction-time").text(window.reactionTime);
 		$("#reaction-label").show();
 		$("#current-status").html("<b>Recording...</b>");
@@ -27,7 +27,7 @@ window.voiceHeard = function() {
 
 // When the user is done speaking.
 window.voiceDone = function() {
-	if (!window.resultRecorded) {
+	if (!window.resultRecorded && window.reactionTime) {
 		window.resultRecorded = true;
 		recordResult(window.reactionTime, function (data){
 			$("#current-status").html("<b>Result recorded. Press spacebar for next image.</b> ");
