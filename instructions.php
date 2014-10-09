@@ -50,5 +50,5 @@
 	</p>
 	
 	<!-- The actual action of this is set in javascript (request.js) -->
-	<a id="begin" class="btn" onclick="startNextLanguage(0); return false"> Begin Experiment </a>
+	<a id="begin" class="btn" class="disabled" disabled onclick="startNextLanguage(0); return false"> (Please enable microphone above) </a>
 </div>

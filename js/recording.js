@@ -63,7 +63,8 @@ function processAudio(audioEvent) {
 
 
 // This function checks for audio capabilities and turns on the mic.
-function initMedia() {
+window.initCallback = function(){}
+function initMedia(callback) {
 	if (!(navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia)) {
 		return errorCallback("No microphone access for this computer / browser.");
 	}
@@ -80,6 +81,7 @@ function initMedia() {
 		
 	// Ask for microphone permissions.
 	// When complete, hook up the microphone to the "processAudio()" function above
+	window.initCallback = callback;
 	navigator.getUserMedia({audio: true}, startRecording, errorCallback);
 }
 
@@ -92,10 +94,18 @@ function startRecording(stream) {
 	processor.connect(context.destination);
 	
 	window.recordingStarted = Date.now();
+	
+	if (_.isFunction(window.initCallback))
+		window.initCallback();
 }
 
 function errorCallback(error) {
 	console.log ("Error when initializing audio: ", error);
+	if (error.name == "PermissionDeniedError") {
+		alert("We require the microphone to conduct the experiment. "
+			+ "Please click the little \"Camera\" icon on the right-side "
+			+ "of your search-bar to unblock the microphone.");
+	}
 }
 
 function stopRecording(stream) {

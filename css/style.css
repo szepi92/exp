@@ -97,10 +97,16 @@ html, body {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 200px;
+	min-width: 200px;
+	max-width: 300px;
 	margin-top: 30px;
 	margin-bottom: 150px;
 	vertical-align: center;
+	text-align: center;
+}
+
+#begin[disabled], #begin.disabled {
+	pointer-events: none;
 }
 
 

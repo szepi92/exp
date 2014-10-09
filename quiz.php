@@ -32,7 +32,11 @@
 	<script src="js/recording.js"></script>
 	<script>
 	$(document).ready(function(){
-		initMedia();
+		initMedia(function() {
+			$("#begin").removeClass("disabled");
+			$("#begin").removeAttr("disabled");
+			$("#begin").text("Begin Experiment");
+		});
 		customRedirect("instructions.php");
 		window.keyHandler = function() {}
 		$(document).keypress(function(event){window.keyHandler(event);});
