@@ -31,7 +31,7 @@ function processAudio(audioEvent) {
 	// TODO: This depends on mic settings.
 	// Different computers == different loudness values!
 	// A better algorithm would be to detect a steep change in volume
-	var LOUD_ENOUGH = 0.08; 
+	var LOUD_ENOUGH = 0.12; 
 	var QUIETNESS_WAIT_TIME = 1000;
 	
 	// Get the average volume of these samples
