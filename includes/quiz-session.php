@@ -83,4 +83,26 @@ class QuizSession extends DBObject {
 		$this->setStatus(SessionStatus::IN_PROGRESS);
 		$this->start_time = $timestamp;
 	}
+	
+	// Functions to search for sessions
+	
+	public static function LookUpAll($conn=null) {
+		if ($conn == null) $conn = DB::Connect();
+		
+		// Construct the query
+		$tbl = self::TABLE_NAME;
+		$user_tbl = User::TABLE_NAME;
+		$status = SessionStatus::COMPLETE;
+		$query_string = "
+SELECT $tbl.ID,StartTime,FirstName,LastName
+FROM $tbl INNER JOIN $user_tbl ON $tbl.UserID=$user_tbl.ID
+WHERE Status = '$status'
+ORDER BY LastName,FirstName,StartTime";
+		
+		// Execture the query
+		$stmt = $conn->prepare($query_string);
+		$stmt->execute();
+		$ans = $stmt->fetchAll();
+		return $ans;
+	}
 }
