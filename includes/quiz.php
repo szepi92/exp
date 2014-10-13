@@ -99,6 +99,7 @@ class Quiz extends DBObject {
 		return $total;
 	}
 	
+	// get the file name of the image for a fixed language and question
 	public function image($lang, $quest) {
 		if ($lang >= count($this->languages)) return null;
 		if ($quest >= $this->questionsPerLang()) return null;

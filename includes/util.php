@@ -34,4 +34,10 @@ class Util {
 		if (!isset($_REQUEST[$key]) || $_REQUEST[$key] == null) return null;
 		return self::Sanitize($_REQUEST[$key]);
 	}
+	
+	static public function StripExtension($fname) {
+		$pos = strrpos($fname,'.');
+		if ($pos !== false) return substr($fname,0,$pos);
+		else return $fname;
+	}
 }

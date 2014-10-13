@@ -124,21 +124,22 @@ html, body {
 
 .results {
 	width: 1300px;
-	height: 8000px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-object {
-	height: 100%;
-	width: 100%;
+	margin-bottom: 100px;
 }
 
 .data-column {
 	display: inline-block;
 	height: 100%;
 	width: 49%;
+}
+
+.data-column th {
+	background-color: #EEEEEE;
+	font-weight: bold;
+	text-align: center;
 }
 
 .results h2, .results h3 {

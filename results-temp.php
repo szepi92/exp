@@ -10,7 +10,7 @@
 
 <div class="results" style="height:auto;">
 	<p>
-	The experiment is now complete. Your responses are currently being collected and your results will be emailed to you in the next few days.
+	The experiment is now complete. Your responses are currently being collected. Please contact me if you would like to have them emailed to you.
 	</p>
 	
 	<p>

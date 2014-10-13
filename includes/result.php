@@ -35,6 +35,17 @@ class Result extends DBObject {
 		$this->sound_data = $sound_data;
 	}
 	
+	// Basic setters
+	public function question() {
+		return $this->question;
+	}
+	public function language() {
+		return $this->language;
+	}
+	public function reactionTime() {	// milliseconds
+		return $this->reaction_ms;
+	}
+	
 	// Check if a result already exists for this (session, language, question)
 	// Returns the value associated with it.
 	// TODO: Should return actual result object
@@ -63,6 +74,27 @@ class Result extends DBObject {
 		if ($result === FALSE) return FALSE;
 		$ans = $result["ReactionMs"];
 		$stmt->closeCursor();
+		return $ans;
+	}
+	
+	public static function LookUpAll($session_id, $conn=null) {
+		if ($conn == null) $conn = DB::Connect();
+		
+		// Construct the query
+		$query_string = "SELECT * FROM " . self::TABLE_NAME . " WHERE QuizSessionID = :session_id";
+		$values = array("session_id" => $session_id);
+		
+		// Execture the query
+		$stmt = $conn->prepare($query_string);
+		$stmt->execute($values);
+		$results = $stmt->fetchAll();
+		
+		// Process the results (return array of Result object)
+		$ans = array();
+		foreach ($results as $result) {
+			$ans[] = new Result($session_id, $result["Language"], $result["Question"], $result["ReactionMs"]);
+		}
+		
 		return $ans;
 	}
 }
