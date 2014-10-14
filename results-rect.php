@@ -46,7 +46,7 @@
 		th { text-align:left; }
 	</style>
 	
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
   <body>
     <div id="result-title">
@@ -92,7 +92,12 @@
 			
 			$tops = array();
 			for($c=0;$c<$COLUMNS;++$c) $tops[] = 0;
+			for($i=0;$i<$n;$i++) $tops[$i % $COLUMNS] += $result_list->data[$i]->reactionTime() * $CM_PER_MS * $PX_PER_CM;
+			$max_height = max($tops);
+			for($c=0;$c<$COLUMNS;++$c) $tops[$c] = 0;
 		?>
+		
+		$("#myCanvas").attr("height",<?=$max_height?>);
 		<?php for($i=0;$i<$n;$i++) { ?>
 			<?php
 				$question = $result_list->data[$i];
@@ -121,7 +126,6 @@
 
 	
     <!-- Library javascript files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
 	<script src="js/lib/underscore-min.js"></script>
 	<script src="js/lib/backbone-min.js"></script>
