@@ -49,20 +49,6 @@ $summary = array(
 	"slowest_word" => ""
 );
 
-$COLOUR_LIST = array(
-	"viridian", 
-	"cadmium yellow med", 
-	"caput mortum", 
-	"vermilion", 
-	"alizarin", 
-	"prussian", 
-	"oxide", 
-	"ultramarine blue", 
-	"naples yellow", 
-	"burnt sienna", 
-	"cadmium yellow light", 
-	"burnt umber");
-
 return true;
 
 

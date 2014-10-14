@@ -74,7 +74,7 @@
 					$prime_lists[] = $primes;
 				}
 				
-				$assignment = Colour::AssignColours($COLOUR_LIST, $prime_lists);
+				$assignment = Colour::AssignColours(array_keys(Colour::$COLOUR_MAP), $prime_lists);
 				$prime_map = $assignment[0];
 				$colour_map = $assignment[1];
 				

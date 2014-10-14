@@ -7,6 +7,20 @@ class Colour {
 	public $primes = array();
 	public $total_freq = 0;
 	
+	public static $COLOUR_MAP = array(
+		"naples yellow"			=> "#ffcc67",
+		"burnt sienna"			=> "#961a10",
+		"alizarin crimson"		=> "#8d0303",
+		"vermillion"			=> "#d52927",
+		"cadmium yellow medium"	=> "#f2c800",
+		"cadmium yellow light"	=> "#f9ee00",
+		"oxide of chrome"		=> "#517c34",
+		"viridian"				=> "#02a087",
+		"light blue"			=> "#007f95",
+		"prussian blue"			=> "#003153",
+		"ultramarine violet"	=> "#512d5b",
+	);
+	
 	public function __construct($name) {
 		$this->name = $name;
 	}
