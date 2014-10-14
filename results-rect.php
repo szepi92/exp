@@ -105,8 +105,9 @@
 			?>
 			
 			grd = ctx.createLinearGradient(0,0,0,<?=$height?>);
-			<?php for($s=0;$s<count($my_colours); ++$s) { ?>
-			grd.addColorStop(<?= $s*1.0/count($my_colours) ?>, "<?=Colour::$COLOUR_MAP[$my_colours[$s]]?>");
+			grd.addColorStop(0, "<?=Colour::$COLOUR_MAP[$my_colours[0]]?>");
+			<?php for($s=1;$s<count($my_colours); ++$s) { ?>
+			grd.addColorStop(<?= $s*1.0/(count($my_colours) - 1)  ?>, "<?=Colour::$COLOUR_MAP[$my_colours[$s]]?>");
 			<?php } ?>
 
 			// Fill with gradient
