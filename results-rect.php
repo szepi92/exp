@@ -109,7 +109,7 @@
 				$my_colours = array_map($prime_mapper, $primes);
 			?>
 			
-			grd = ctx.createLinearGradient(0,0,0,<?=$height?>);
+			grd = ctx.createLinearGradient(0,<?=$tops[$c]?>,0,<?=$tops[$c]+$height?>);
 			grd.addColorStop(0, "<?=Colour::$COLOUR_MAP[$my_colours[0]]?>");
 			<?php for($s=1;$s<count($my_colours); ++$s) { ?>
 			grd.addColorStop(<?= $s*1.0/(count($my_colours) - 1)  ?>, "<?=Colour::$COLOUR_MAP[$my_colours[$s]]?>");
