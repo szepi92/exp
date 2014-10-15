@@ -12,13 +12,13 @@ class Colour {
 		"ultramarine violet"	=> "#512d5b",
 		"cadmium yellow medium"	=> "#f2c800",
 		"alizarin crimson"		=> "#8d0303",
-		"burnt sienna"			=> "#961a10",
 		"cadmium yellow light"	=> "#f9ee00",
 		"viridian"				=> "#02a087",
 		"light blue"			=> "#007f95",
 		"prussian blue"			=> "#003153",
-		"oxide of chrome"		=> "#517c34",
 		"naples yellow"			=> "#ffcc67",
+		"oxide of chrome"		=> "#517c34",
+		"burnt sienna"			=> "#961a10",
 	);
 	
 	public function __construct($name) {
