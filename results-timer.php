@@ -83,13 +83,15 @@
 	</div>
 	
 	<div class="container">
-		<?php $result_list = $results_by_language[$language]; ?>
-		<div class="timer-group">
+		<?php for ($language = 0; $language < 2; $language++ ) {?>
+		<div class="timer-group" style="width: 48%; display: inline-block; margin-right: 1%;">
+			<?php $result_list = $results_by_language[$language]; ?>
 			<h3><?=$result_list->language?></h3>
 			<?php foreach ($result_list->data as $question) { ?>
-			<span style="display: inline-block; min-width: 47px;" class="timer" data-count="<?= $question->reactionTime()  ?>">0</span>
+			<span style="display: inline-block; min-width: 70px;" class="timer" data-count="<?= $question->reactionTime()  ?>">0</span>
 			<?php } ?>
 		</div>
+		<?php } ?>
 	</div>
 	
     <!-- Library javascript files -->
