@@ -35,11 +35,11 @@
 	
   </head>
   <body>
-    <div id="result-title">
+    <!--<div id="result-title">
 		<h1>Results</h1>
-	</div>
+	</div>-->
 	
-	<div id="experiment-data">
+<!--	<div id="experiment-data">
 		<div class="data">
 			<div class="data-title"> Summary </div>
 			<ul>
@@ -61,11 +61,12 @@
 		</div>
 		<?php } ?>
 	</div>
+-->
 	
 	<div class="results">
 		<?php foreach ($results_by_language as $result_list) { ?>
 		<div class="data-column object">
-			<h3><?=$result_list->language?></h3>
+			<h3 style="margin-left: 130px; margin-top: 100px;"><?=$result_list->language?></h3>
 			<?php
 				// Assign the colours, and create a function mapping primes to colour
 				$prime_lists = array();
@@ -83,9 +84,9 @@
 					return $prime_map[$prime];
 				};
 			?>
-			<table>
-				<colgroup><col width="151"><col width="86"><col width="86"><col width="302"></colgroup>
-				<tr><th>Word</th> <th>Reaction Time (ms)</th> <th>Prime Factors</th> <th>Assigned Colours</th> </tr>
+			<table style="margin-left: 130px;">
+				<colgroup><col width="300"><col width="100"><!--<col width="86"><col width="302">--></colgroup>
+				<tr><th>Word</th> <th>Reaction Time (ms)</th> <!--<th>Prime Factors</th> <th>Assigned Colours</th>--> </tr>
 				<?php foreach ($result_list->data as $question) { ?>
 
 				<tr>
@@ -94,8 +95,8 @@
 					<?php
 						$primes = Algo::Primes($question->reactionTime());
 					?>
-					<td><?= implode(", ", $primes); ?></td>
-					<td><?= implode(", ", array_map($prime_mapper, $primes)); ?></td>
+					<!--<td><?= implode(", ", $primes); ?></td>
+					<td><?= implode(", ", array_map($prime_mapper, $primes)); ?></td>-->
 				</tr>
 				<?php } ?>
 			</table>

@@ -11,7 +11,7 @@ They define an ordering of questions.
 */
 
 class Quiz extends DBObject {
-	const NUMBER_OF_QUESTIONS = 250;		// The default number of questions per language
+	const NUMBER_OF_QUESTIONS = 9000000;		// The default number of questions per language
 	const TABLE_NAME = "Quizzes";
 
 	protected $languages = array();			// array of Language objects
