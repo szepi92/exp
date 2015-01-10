@@ -83,7 +83,7 @@
 	</div>
 	
 	<div class="container">
-		<?php for ($language = 0; $language < 2; $language++ ) {?>
+		<?php for ($language = 0; $language < $quiz->numLanguages(); $language++ ) {?>
 		<div class="timer-group" style="width: 48%; display: inline-block; margin-right: 1%;">
 			<?php $result_list = $results_by_language[$language]; ?>
 			<h3><?=$result_list->language?></h3>

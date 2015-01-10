@@ -41,7 +41,7 @@ if ($status == SessionStatus::READY) {
 	$cur_language = $quiz_session->currentLanguage();
 	if (!isset($language) || $language != $cur_language || $language >= count($quiz->languages())) {
 		// Should be starting the next quiz (currentLanguage() will already be set)
-		return new Error(ErrorMessages::BAD_DATA);
+		return new Error(ErrorMessages::BAD_DATA, "Invalid Language");
 	}
 	
 	// These should already match
