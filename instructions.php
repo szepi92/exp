@@ -4,6 +4,7 @@
 ?>
 <script>var QUIZ_SESSION_ID = "<?=$quiz_session->id()?>";</script>
 <?php
+	$num_languages = $quiz->numLanguages();
 	$num_questions = $quiz->questionsPerLang();
 ?>
 
@@ -13,13 +14,19 @@
 
 <div class="instruction-box">
 	<p>
-		This experiment measures how fast you think in <?= $quiz->language(0) ?> and <?= $quiz->language(1) ?>. The program records your response and analyzes the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your response. 
+		This experiment measures how fast you think in <?
+			for ($i = 0; $i<$num_languages; ++$i) {
+				if ($i > 0 && $i<$num_languages -1) echo ", ";
+				else if ($i>0) echo " and ";
+				echo $quiz->language($i);
+			}
+		?>. The program records your response and analyses the amplitudes to measure the time elapsed between the picture appearing on the screen and the start of your response. 
 	</p>
 	<p>
 		You will see an image on the screen and all you have to do is say what it is as fast as you can. After you see your reaction time appear under the picture, press the spacebar to load the next image. 
 	</p>
 	<p>
-		First, you will go through a set of <?=$num_questions?> images in <?= $quiz->language(0) ?>, then another set of <?=$num_questions?> images in <?= $quiz->language(1) ?>. 
+		First, you will go through a set of <?=$num_questions?> images in <?= $quiz->language(0) ?>, then another set of <?=$num_questions?> images in <?= $quiz->language(1) ?><? if ($num_languages > 2) echo ", and so on" ?>. 
 	</p>
 	<p>
 		You can take a break whenever you like while completing the experiment - just press the spacebar when you are ready to continue.

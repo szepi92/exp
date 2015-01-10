@@ -24,14 +24,28 @@ $email           = Util::GetRequestParameter('Email');
 $birthday        = Util::GetRequestParameter('Birthday');
 $country         = Util::GetRequestParameter('Country');
 $relocation      = Util::GetRequestParameter('Relocation');
-$first_language  = Util::GetRequestParameter('FirstLanguage');
-$second_language = Util::GetRequestParameter('SecondLanguage');
+$languages       = Util::GetRequestParameter('Languages');
+$num_languages   = Util::GetRequestParameter('NumLanguages');
 
 // This will be returned to the front-end if necessary
 $ERROR = null;
 
 // Only continue if we are "POST"-ing
 if ($_SERVER["REQUEST_METHOD"] != "POST") return;
+
+// Check if a valid "num_languages" was specified.
+$num_languages = intval($num_languages);
+if (empty($num_languages) || !is_int($num_languages) || $num_languages <= 0)
+	return $ERROR = new Error(ErrorMessages::BAD_DATA, "Invalid number of languages specified.");
+
+// Populate the languages array, and ensure they are non-empty
+$languages = array();
+for ($i = 0; $i < $num_languages; ++$i) {
+	$val = Util::GetRequestParameter('Language' . ($i + 1));
+	if (empty($val)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Language " . ($i+1) . " is invalid.");
+	$lang = new Language($val);
+	array_push($languages,$lang);
+}
 
 // Validation of data
 if ($VALIDATE_DATA) {
@@ -42,9 +56,7 @@ if ($VALIDATE_DATA) {
 	if (empty($birthday)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Birthday is required.");
 	if (empty($country)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Country of Origin is required.");
 	if (empty($relocation)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Relocation Date is required.");
-	if (empty($first_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "First Language is required.");
-	if (empty($second_language)) return $ERROR = new Error(ErrorMessages::BAD_DATA, "Second Language is required.");
-
+	
 	// Check the email address to avoid hassle later
 	if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 	return $ERROR = new Error(ErrorMessages::BAD_DATA, "Please specify a valid E-Mail Address.");
@@ -59,11 +71,6 @@ if ($VALIDATE_DATA) {
 // Further parse the dates (into UNIX time stamps)
 $birthday = strtotime($birthday);
 $relocation = strtotime($relocation);
-
-// Further parse the languages (into Language objects)
-$first_language  = new Language($first_language);
-$second_language = new Language($second_language);
-$languages       = array($first_language, $second_language);
 
 $num_questions   = Quiz::NUMBER_OF_QUESTIONS;
 
